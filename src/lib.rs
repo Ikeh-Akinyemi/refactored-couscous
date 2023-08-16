@@ -1,76 +1,66 @@
-// Define a structure for a single search entry
+// src/lib.rs
+
+use std::collections::HashMap;
+use wasm_bindgen::prelude::*;
+use js_sys::Array;
+
+#[wasm_bindgen]
 #[derive(Debug, Clone)]
-struct Entry {
-    pub data: String,
-    pub score: f32,
+pub struct Token {
+    frequency: usize,
 }
 
-// Define a structure for the search index
-#[derive(Default)]
-struct Wade {
-    index: std::collections::HashMap<String, Vec<Entry>>,
+#[wasm_bindgen]
+#[derive(Debug)]
+pub struct Index {
+    data: Vec<String>,
+    tokens: HashMap<String, Vec<Token>>,
 }
 
-impl Wade {
-    // Tokenize the input string
-    pub fn tokenize(&self, input: &str) -> Vec<String> {
-        input
-            .to_lowercase()
+impl Token {
+    fn tokenize(s: &str) -> Vec<String> {
+        s.to_lowercase()
             .split_whitespace()
-            .map(|s| s.to_string())
+            .map(|word| word.to_string())
             .collect()
     }
-    
-    // Add data to the search index
-    pub fn add(&mut self, data: String) {
-        let tokens = self.tokenize(&data);
-        for token in tokens {
-            self.index
-                .entry(token)
-                .or_insert_with(Vec::new)
-                .push(Entry {
-                    data: data.clone(),
-                    score: 0.0, // We'll calculate this during the search
-                });
+}
+
+#[wasm_bindgen]
+impl Index {
+    #[wasm_bindgen(constructor)]
+    pub fn new() -> Self {
+        Index {
+            data: Vec::new(),
+            tokens: HashMap::new(),
         }
     }
 
-    // Search the index and return results
-    pub fn search(&self, query: &str) -> Vec<String> {
-        let tokens = self.tokenize(query);
-        let mut scores: std::collections::HashMap<String, f32> = std::collections::HashMap::new();
-
+    pub fn add(&mut self, s: &str) {
+        self.data.push(s.to_string());
+        let tokens = Token::tokenize(s);
         for token in tokens {
-            if let Some(entries) = self.index.get(&token) {
-                for entry in entries {
-                    // Increment the score for each matching token
-                    let counter = scores.entry(entry.data.clone()).or_insert(0.0);
-                    *counter += 1.0;
+            let frequency = s.matches(&token).count();
+            self.tokens.entry(token.clone()).or_insert_with(Vec::new).push(Token {
+                frequency,
+            });
+        }        
+    }
+
+    pub fn search(&self, query: &str) -> Array {
+        let tokens = Token::tokenize(query);
+        let mut results = Vec::new();
+        for token in tokens {
+            if let Some(matches) = self.tokens.get(&token) {
+                for match_ in matches {
+                    results.push(self.data[match_.frequency].clone());
                 }
             }
         }
+        results.sort();
+        results.dedup();
 
-        // Sort results by score
-        let mut results: Vec<_> = scores.iter().collect();
-        results.sort_by(|a, b| b.1.partial_cmp(a.1).unwrap());
-
-        // Extract and return the data from the results
-        results.iter().map(|(data, _)| (*data).clone()).collect()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_search() {
-        let mut wade = Wade::default();
-        wade.add("Hello World".to_string());
-        wade.add("Hello Rust".to_string());
-        wade.add("Rust is great".to_string());
-
-        let results = wade.search("Hello");
-        assert_eq!(results, vec!["Hello World", "Hello Rust"]);
+        // Convert Vec<String> to js_sys::Array
+        results.into_iter().map(JsValue::from).collect()
     }
 }
