@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Wade Search in WebAssembly</title>
+  </head>
+  <body>
+    <input type="text" id="searchInput" placeholder="Search..." />
+    <button onclick="performSearch()">Search</button>
+    <ul id="results"></ul>
+
+    <script type="module">
+      import init, { Index } from "./pkg/refactored_couscous.js";
+
+      let index;
+
+      async function setup() {
+        await init();
+        index = new Index();
+        // Sample data for demonstration purposes
+        index.add("Hello world");
+        index.add("Rust is amazing");
+        index.add("Wade in Rust");
+      }
+
+      function performSearch() {
+        const query = document.getElementById('searchInput').value;
+        const results = index.search(query);
+        displayResults(results);
+      }
+
+      window.performSearch = performSearch;
+
+      function displayResults(results) {
+        const resultsElement = document.getElementById('results');
+        resultsElement.innerHTML = '';
+        results.forEach(result => {
+          const li = document.createElement('li');
+          li.textContent = result;
+          resultsElement.appendChild(li);
+        });
+      }
+
+      setup();
+    </script>
+  </body>
+</html>
