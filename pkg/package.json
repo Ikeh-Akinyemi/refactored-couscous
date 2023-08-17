@@ -1,0 +1,21 @@
+{
+  "name": "refactored-couscous",
+  "description": "Building an NPM using Rust + WebAssembly",
+  "version": "0.1.0",
+  "license": "LICENSE_APACHE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ikeh-Akinyemi/refactored-couscous"
+  },
+  "files": [
+    "refactored_couscous_bg.wasm",
+    "refactored_couscous.js",
+    "refactored_couscous.d.ts",
+    "LICENSE_APACHE"
+  ],
+  "module": "refactored_couscous.js",
+  "types": "refactored_couscous.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
