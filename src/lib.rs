@@ -7,6 +7,8 @@ use js_sys::Array;
 #[wasm_bindgen]
 #[derive(Debug, Clone)]
 pub struct Token {
+    word: String,
+    position: usize,
     frequency: usize,
 }
 
@@ -37,11 +39,14 @@ impl Index {
     }
 
     pub fn add(&mut self, s: &str) {
+        let position = self.data.len();
         self.data.push(s.to_string());
         let tokens = Token::tokenize(s);
         for token in tokens {
             let frequency = s.matches(&token).count();
             self.tokens.entry(token.clone()).or_insert_with(Vec::new).push(Token {
+                word: token,
+                position,
                 frequency,
             });
         }        
@@ -53,7 +58,7 @@ impl Index {
         for token in tokens {
             if let Some(matches) = self.tokens.get(&token) {
                 for match_ in matches {
-                    results.push(self.data[match_.frequency].clone());
+                    results.push(self.data[match_.position].clone());
                 }
             }
         }
