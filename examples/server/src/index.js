@@ -1,4 +1,4 @@
-import { Index } from 'refactored-couscous-v1';
+import { Index } from 'refactored-couscous-v1/refactored_couscous.js';
 
 const index = new Index();
 index.add("Hello world");

@@ -3,6 +3,7 @@
   "description": "Building an NPM using Rust + WebAssembly",
   "version": "0.1.0",
   "license": "LICENSE_APACHE",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/Ikeh-Akinyemi/refactored-couscous"

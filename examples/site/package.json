@@ -1,6 +1,8 @@
 {
+  "type": "module",
   "scripts": {
-    "serve": "webpack-dev-server"
+    "serve": "webpack-dev-server",
+    "dev": "node --experimental-modules --experimental-wasm-modules index.js"
   },
   "dependencies": {
     "refactored-couscous": "^0.1.0"
