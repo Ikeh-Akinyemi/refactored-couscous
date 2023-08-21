@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "scripts": {
     "serve": "webpack-dev-server"
   },
