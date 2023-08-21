@@ -1,7 +1,7 @@
 {
   "name": "refactored-couscous",
   "description": "Building an NPM using Rust + WebAssembly",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "LICENSE_APACHE",
   "type": "module",
   "repository": {

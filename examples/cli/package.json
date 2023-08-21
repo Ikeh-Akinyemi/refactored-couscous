@@ -6,12 +6,12 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node ."
+    "dev": "node --experimental-modules --experimental-wasm-modules ./src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "refactored-couscous-v1": "^0.1.0"
+    "refactored-couscous": "^0.1.1"
   }
 }
