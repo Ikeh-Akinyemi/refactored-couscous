@@ -1,4 +1,4 @@
-import("./node_modules/refactored-couscous/refactored_couscous.js").then((js) => {
+import("refactored-couscous").then((js) => {
   const index = new js.Index();
   index.add("Hello world");
   index.add("Rust is amazing");
