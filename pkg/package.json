@@ -1,5 +1,5 @@
 {
-  "name": "refactored-couscous",
+  "name": "refactored-couscous-v1",
   "description": "Building an NPM using Rust + WebAssembly",
   "version": "0.1.0",
   "license": "LICENSE_APACHE",
