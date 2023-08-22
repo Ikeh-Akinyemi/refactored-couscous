@@ -1,8 +1,60 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
     <title>Wade Search in WebAssembly</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #f4f4f4;
+      }
+
+      input[type="text"] {
+        width: 70%;
+        padding: 10px;
+        margin-right: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      ul#results {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      ul#results li {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      ul#results li:last-child {
+        border-bottom: none;
+      }
+    </style>
   </head>
   <body>
     <input type="text" id="searchInput" placeholder="Search..." />
@@ -24,7 +76,7 @@
       }
 
       function performSearch() {
-        const query = document.getElementById('searchInput').value;
+        const query = document.getElementById("searchInput").value;
         const results = index.search(query);
         displayResults(results);
       }
@@ -32,10 +84,10 @@
       window.performSearch = performSearch;
 
       function displayResults(results) {
-        const resultsElement = document.getElementById('results');
-        resultsElement.innerHTML = '';
-        results.forEach(result => {
-          const li = document.createElement('li');
+        const resultsElement = document.getElementById("results");
+        resultsElement.innerHTML = "";
+        results.forEach((result) => {
+          const li = document.createElement("li");
           li.textContent = result;
           resultsElement.appendChild(li);
         });
